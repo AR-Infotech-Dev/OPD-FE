@@ -1,0 +1,139 @@
+import { API_SERVER_URL } from "@/api/config";
+import { companyMasterSchema } from "../data/module.schema";
+
+export const MAIL_PROVIDER_DEFAULTS = {
+  gmail: { smtp_host: "smtp.gmail.com", smtp_port: "587", smtp_encryption: "tls", smtp_username: "" },
+  yahoo: { smtp_host: "smtp.mail.yahoo.com", smtp_port: "587", smtp_encryption: "tls", smtp_username: "" },
+  outlook: { smtp_host: "smtp.office365.com", smtp_port: "587", smtp_encryption: "tls", smtp_username: "" },
+  custom: { smtp_host: "", smtp_port: "587", smtp_encryption: "tls", smtp_username: "" },
+};
+
+import {
+  CircleCheck,
+  CircleX,
+  MailCheck,
+  Database,
+  Wifi,
+  LoaderCircle,
+  TriangleAlert,
+} from "lucide-react";
+
+export const getCompanyIdentifier = (company = {}) => company?.company_id;
+
+export const getLogoUrl = (logo = "") => {
+  if (!logo) return "";
+  if (/^https?:\/\//i.test(logo)) return logo;
+  return `${API_SERVER_URL}${String(logo).startsWith("/") ? logo : `/${logo}`}`;
+};
+
+export const getLogoPathFromResponse = (response = {}) =>
+  response?.data?.email_logo ||
+  response?.data?.data?.email_logo ||
+  response?.data?.logo ||
+  response?.data?.data?.logo ||
+  response?.data?.path ||
+  response?.data?.data?.path ||
+  response?.data?.url ||
+  response?.data?.data?.url ||
+  response?.email_logo ||
+  response?.logo ||
+  response?.path ||
+  response?.url ||
+  "";
+
+export const getSignaturePathFromResponse = (response = {}) =>
+  response?.data?.authority_sign ||
+  response?.data?.data?.authority_sign ||
+  response?.authority_sign ||
+  "";
+
+export const getHappyClientLogosFromResponse = (response = {}) =>
+  response?.data?.footer_logos || response?.data?.data?.footer_logos || [];
+
+const parseFooterLogos = (value) => {
+  if (Array.isArray(value)) return value;
+  try {
+    const parsed = JSON.parse(value || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+export const buildMailConfigPayload = (formData = {}) => {
+  const providerDefaults = MAIL_PROVIDER_DEFAULTS[formData.mail_provider] || MAIL_PROVIDER_DEFAULTS.gmail;
+  const smtpUsername = formData.mail_provider === "custom"
+    ? formData.smtp_username
+    : formData.smtp_username || formData.sender_email;
+
+  return {
+    smtp_host: formData.smtp_host || providerDefaults.smtp_host,
+    smtp_port: formData.smtp_port || providerDefaults.smtp_port,
+    smtp_encryption: formData.smtp_encryption || providerDefaults.smtp_encryption,
+    smtp_username: smtpUsername,
+  };
+};
+
+export const normalizeCompanyData = (company = {}) => {
+  const provider = company?.mail_provider || "gmail";
+  const providerDefaults = MAIL_PROVIDER_DEFAULTS[provider] || MAIL_PROVIDER_DEFAULTS.gmail;
+
+  return {
+    ...companyMasterSchema.form.initialValues,
+    ...company,
+    company_name: company?.company_name || "",
+    sender_email: company?.sender_email || "",
+    cc_email: company?.cc_email || "",
+    sender_name: company?.sender_name || "",
+    mail_provider: provider,
+    smtp_host: company?.smtp_host || providerDefaults.smtp_host,
+    smtp_port: company?.smtp_port || providerDefaults.smtp_port,
+    smtp_encryption: company?.smtp_encryption || providerDefaults.smtp_encryption,
+    smtp_username: company?.smtp_username || "",
+    mail_connection_status: company?.mail_connection_status || "not_tested",
+    mail_last_tested_at: company?.mail_last_tested_at || null,
+    email_app_password: company?.email_app_password || "",
+    mobile_number: company?.mobile_number || "",
+    company_address: company?.company_address || "",
+    country: company?.country || "",
+    state: company?.state || "",
+    city: company?.city || "",
+    zip: company?.zip || "",
+    pan: company?.pan || "",
+    time_format: company?.time_format || "DD-MM-YYYY",
+    date_format: company?.date_format || "DD-MM-YYYY",
+    email_logo: company?.email_logo || "",
+    authority_sign_url: company?.authority_sign || "",
+    authority_sign: company?.authority_sign
+      ? { name: String(company.authority_sign).split("/").pop(), url: getLogoUrl(company.authority_sign), existing: true }
+      : null,
+    happy_client_logos: parseFooterLogos(company?.footer_logos).map((logo, index) => ({
+      name: logo.name || `Client ${index + 1}`,
+      url: getLogoUrl(logo.path || logo.url || logo),
+      path: logo.path || logo.url || logo,
+      existing: true,
+    })),
+    status: company?.status || "active",
+  };
+};
+
+export const getEmailConnectionBadge = (status = "not_tested") => {
+  
+  if (status === "connected") {
+    return { icon: MailCheck, title: 'Email Connected', label: "Connected", className: "bg-green-50 text-green-700 border-green-200", };
+  }
+
+  if (status === "failed") {
+    return { icon: MailCheck, title: 'Email Failed', label: "Failed", className: "bg-red-50 text-red-700 border-red-200", };
+  }
+
+  return { icon: MailCheck, title: 'Email Not Tested', label: "Not Tested", className: "bg-slate-50 text-slate-600 border-slate-200", };
+};
+
+export const getDBConnectionBadge = (status = "not_connected") => {
+  if (status === "connected") {
+    return { icon: Database, title: 'DB Connected', label: "Connected", className: "bg-green-50 text-green-700 border-green-200", iconClassName: "" };
+  }
+
+  return { icon: Database, title: 'DB Not Connected', label: "Not Connected", className: "bg-amber-50 text-amber-600 border-amber-200", iconClassName: "animate-pulse" };
+};
