@@ -25,14 +25,14 @@ const FlowupSLoader = () => {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden ">
       <div className='absolute h-full w-full z-0' >
-        <div className='h-full w-full z-0 bg-white bg-linear-to-br from-[#356eff] via-[#ffffff] relative'>
+        <div className='h-full w-full z-0 relative' style={{ background: 'linear-gradient(135deg, var(--primary-500) 0%, var(--surface-page) 40%, var(--surface-base) 75%)' }}>
           <div className='absolute top-16 left-44 h-56 w-50 rounded-br-full rounded-bl-full rounded-tr-full rounded-tl-full bg-white/70 blur-2xl animate-spin delay-1000' ></div>
         </div>
       </div>
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0"></div>
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/20 blur-[120px] animate-blob"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 blur-[120px] animate-blob animation-delay-2000"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[var(--primary-500)]/20 blur-[120px] animate-blob"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[var(--primary-300)]/20 blur-[120px] animate-blob animation-delay-2000"></div>
       </div>
 
       <div className="relative flex flex-col items-center">
@@ -54,8 +54,8 @@ const FlowupSLoader = () => {
       </div>
 
       {/* Footer Branding */}
-      <div className="absolute bottom-10 flex items-center gap-2 px-6 py-2 bg-white">
-        <span className="text-[11px] font-light text-slate-400 tracking-tight">Copyright @ 2026 flowupS CallDesk</span>
+      <div className="absolute bottom-10 flex items-center gap-2 px-6 py-2 bg-transparent">
+        <span className="text-[11px] font-light text-[var(--text-secondary)] tracking-tight">Copyright @ 2026 flowupS CallDesk</span>
       </div>
 
       <style dangerouslySetInnerHTML={{

@@ -2342,7 +2342,7 @@ thead th:hover {
   color: var(--text-secondary);
   font-size: 12px;
   text-align: center;
-  text-wrap: wrap ;
+  text-wrap: wrap;
   line-height: 1.4;
 }
 
@@ -6029,11 +6029,12 @@ table input[type="checkbox"]:focus-visible {
 
 .topbar-greeting {
   min-width: 0;
-  background-image: url(/public/images/user_greeting.png);
+  background-image: url(/images/user_greeting.png);
   background-size: contain;
   background-repeat: no-repeat;
-  padding-right: 78px;
+  padding-right: 70px;
   background-position: right;
+  padding-bottom: 1px;
 }
 
 .topbar-greeting h5 {
@@ -6684,4 +6685,19 @@ body .swal2-popup.quotation-swal-popup .swal2-validation-message {
   .api-progress-fill {
     transition: none;
   }
+}
+
+/* Legacy blue utilities now follow the OPD theme, including hover/focus states. */
+@theme inline {
+  --color-blue-50: var(--primary-50);
+  --color-blue-100: var(--primary-100);
+  --color-blue-200: var(--primary-200);
+  --color-blue-300: var(--primary-300);
+  --color-blue-400: var(--primary-400);
+  --color-blue-500: var(--primary-500);
+  --color-blue-600: var(--primary-600);
+  --color-blue-700: var(--primary-700);
+  --color-blue-800: var(--primary-800);
+  --color-blue-900: var(--primary-900);
+  --color-blue-950: var(--text-primary);
 }

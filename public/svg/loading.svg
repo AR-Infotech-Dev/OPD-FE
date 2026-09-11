@@ -10,18 +10,18 @@
     @keyframes pulse { 0%,70%,100% { opacity:.25; } 35% { opacity:1; } }
     @media(prefers-reduced-motion:reduce) { .orbit,.core,.dot { animation:none; } }
   </style>
-  <circle cx="120" cy="80" r="62" fill="#f3f6ff"/>
-  <circle cx="120" cy="80" r="46" fill="none" stroke="#dce6ff" stroke-width="1.5" stroke-dasharray="3 7"/>
+  <circle cx="120" cy="80" r="62" fill="#f0fbf9"/>
+  <circle cx="120" cy="80" r="46" fill="none" stroke="#d5f2ee" stroke-width="1.5" stroke-dasharray="3 7"/>
   <g class="core">
-    <rect x="96" y="56" width="48" height="48" rx="16" fill="#245cf5"/>
+    <rect x="96" y="56" width="48" height="48" rx="16" fill="#1a9493"/>
     <path d="M109 80a11 11 0 0 1 19-7" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
     <path d="M131 80a11 11 0 0 1-19 7" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" opacity=".55"/>
   </g>
   <g class="orbit">
-    <circle cx="120" cy="34" r="7" fill="#245cf5"/>
-    <rect x="113" y="119" width="14" height="14" rx="4" fill="#9ab7ff"/>
+    <circle cx="120" cy="34" r="7" fill="#1a9493"/>
+    <rect x="113" y="119" width="14" height="14" rx="4" fill="#88c3c7"/>
   </g>
-  <circle class="dot" cx="106" cy="158" r="3" fill="#245cf5"/>
-  <circle class="dot b" cx="120" cy="158" r="3" fill="#245cf5"/>
-  <circle class="dot c" cx="134" cy="158" r="3" fill="#245cf5"/>
+  <circle class="dot" cx="106" cy="158" r="3" fill="#1a9493"/>
+  <circle class="dot b" cx="120" cy="158" r="3" fill="#1a9493"/>
+  <circle class="dot c" cx="134" cy="158" r="3" fill="#1a9493"/>
 </svg>

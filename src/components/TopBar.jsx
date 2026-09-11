@@ -101,7 +101,7 @@ function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
           </button>
           <div className="topbar-greeting p-2">
             <h5 className="relative text-slate-600 font-bold text-sm">Welcome back, {user?.name || "User"}
-              <span className="ml-1 absolute animate-bounce">👋</span>
+              {/* <span className="ml-1 absolute animate-bounce">👋</span> */}
             </h5>
             <h5 className="capitalize relative text-xs">
               {user?.role_slug || "User"}

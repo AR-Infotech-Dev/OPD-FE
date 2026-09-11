@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240" role="img" aria-labelledby="title desc">
- <title id="title">No data</title><desc id="desc">A blue folder with gently moving papers and a searching magnifying glass.</desc>
+ <title id="title">No data</title><desc id="desc">A teal folder with gently moving papers and a searching magnifying glass.</desc>
  <style>
  .papers{animation:papers 3.4s ease-in-out infinite}
  .search{transform-origin:230px 165px;animation:search 3.4s ease-in-out infinite}
@@ -9,22 +9,22 @@
  @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
  @media(prefers-reduced-motion:reduce){.papers,.search,.dot{animation:none}}
  </style>
- <ellipse cx="163" cy="213" rx="101" ry="5" fill="#edf3ff"/>
- <path d="M60 94a12 12 0 0 1 12-12h55l16 17h101a12 12 0 0 1 12 12l-13 83H72Z" fill="#8eaff9"/>
+ <ellipse cx="163" cy="213" rx="101" ry="5" fill="#f0fbf9"/>
+ <path d="M60 94a12 12 0 0 1 12-12h55l16 17h101a12 12 0 0 1 12 12l-13 83H72Z" fill="#88c3c7"/>
  <g class="papers">
- <path d="M125 45h68l28 29v95H116V54a9 9 0 0 1 9-9Z" fill="#e5eeff" stroke="#d5e3ff"/>
- <path d="M193 45v22a7 7 0 0 0 7 7h21" fill="#c7daff"/>
- <path d="M92 63h76l25 26v88H83V72a9 9 0 0 1 9-9Z" fill="#fff" stroke="#ccddff"/>
- <path d="M168 63v19a7 7 0 0 0 7 7h18" fill="#dbe7ff"/>
- <path d="M104 104h51m-51 14h61" stroke="#e0eaff" stroke-width="5" stroke-linecap="round"/>
+ <path d="M125 45h68l28 29v95H116V54a9 9 0 0 1 9-9Z" fill="#e5f8f6" stroke="#b0e4de"/>
+ <path d="M193 45v22a7 7 0 0 0 7 7h21" fill="#b0e4de"/>
+ <path d="M92 63h76l25 26v88H83V72a9 9 0 0 1 9-9Z" fill="#fff" stroke="#b0e4de"/>
+ <path d="M168 63v19a7 7 0 0 0 7 7h18" fill="#d5f2ee"/>
+ <path d="M104 104h51m-51 14h61" stroke="#d5f2ee" stroke-width="5" stroke-linecap="round"/>
  </g>
- <path d="M52 118a12 12 0 0 1 12-12h62l20 21h94a12 12 0 0 1 12 14l-10 55a14 14 0 0 1-14 12H76a14 14 0 0 1-14-12Z" fill="#cfe0ff"/>
+ <path d="M52 118a12 12 0 0 1 12-12h62l20 21h94a12 12 0 0 1 12 14l-10 55a14 14 0 0 1-14 12H76a14 14 0 0 1-14-12Z" fill="#b0e4de"/>
  <g class="search">
- <path d="m251 187 31 30" stroke="#245cf5" stroke-width="18" stroke-linecap="round"/>
- <circle cx="224" cy="159" r="39" fill="#eaf2ff" fill-opacity=".9" stroke="#245cf5" stroke-width="12"/>
+ <path d="m251 187 31 30" stroke="#087b7a" stroke-width="18" stroke-linecap="round"/>
+ <circle cx="224" cy="159" r="39" fill="#f0fbf9" fill-opacity=".9" stroke="#087b7a" stroke-width="12"/>
  <path d="M202 151a24 24 0 0 1 21-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
  </g>
  <circle class="dot" cx="57" cy="57" r="5" fill="#a7c4ff"/>
- <circle class="dot d2" cx="276" cy="105" r="5" fill="#245cf5"/>
+ <circle class="dot d2" cx="276" cy="105" r="5" fill="#087b7a"/>
  <circle class="dot d3" cx="43" cy="184" r="4" fill="#a7c4ff"/>
 </svg>

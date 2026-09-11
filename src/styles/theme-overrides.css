@@ -1,0 +1,52 @@
+/* Loaded last to connect legacy semantic aliases to the shared palette. */
+:root {
+  --color-bg: var(--surface-page);
+  --color-success: var(--success);
+  --color-error: var(--danger);
+  --color-warning: var(--warning);
+}
+.app-shell, .main-frame { background: var(--surface-page); }
+.sidebar { background: var(--surface-base); }
+.table-card .premium-table-header th { background: var(--surface-soft); color: var(--text-primary); }
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.auth-shell { background: radial-gradient(circle at top left, var(--primary-100), transparent 45%), linear-gradient(135deg, var(--surface-page), var(--surface-base)); }
+.auth-backdrop-left, .auth-backdrop-right { background: rgb(26 148 147 / 18%); }
+.auth-brand { background: linear-gradient(180deg, var(--surface-page), var(--surface-base)); }
+.table-card .premium-table-header th:hover { background: var(--primary-50); }
+.table-card .premium-table-header th.is-sorted { background: var(--primary-100); color: var(--primary); }
+@media (min-width: 901px) { .topbar-greeting { background-image: url('/svg/greeting-teal.svg'); } }
+
+/* Sidebar selection matches the patient portal reference. */
+.sidebar { background: var(--surface-base); }
+.sidebar-item.active,
+.sidebar-item.active-soft,
+.sidebar-item.active:hover {
+  background: #e5f8f6;
+  color: #1a9493;
+  border-left-color: #1a9493;
+  border-right-color: transparent;
+  border-radius: 0 4px 4px 0;
+  font-weight: 600;
+  box-shadow: none;
+}
+.sidebar-item.active .sidebar-icon,
+.sidebar-item.active-soft .sidebar-icon { color: inherit; }
+/* Smooth navigation feedback without shifting link layout. */
+.sidebar-item {
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.sidebar-item .sidebar-icon {
+  transition: transform 180ms ease, color 180ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .sidebar-item:hover .sidebar-icon { transform: translateX(2px); }
+}
+.sidebar-item:active .sidebar-icon { transform: scale(0.94); }
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-item, .sidebar-item .sidebar-icon { transition: none; }
+  .sidebar-item:hover .sidebar-icon, .sidebar-item:active .sidebar-icon { transform: none; }
+}
