@@ -92,7 +92,7 @@ function LoginForm() {
       <div>
         <div className="mb-1 flex items-center justify-between">
           <label htmlFor="login-password" className="auth-login-label text-[9px] font-semibold uppercase text-slate-600"> Password </label>
-          <Link to="/forgot-password" className="auth-login-link text-[10px] font-medium text-blue-600 hover:underline"> Forgot password? </Link>
+          <Link to="/forgot-password" className="auth-login-link text-[10px] font-medium hover:underline" > Forgot password? </Link>
         </div>
         <div className="relative">
           <input
@@ -110,7 +110,7 @@ function LoginForm() {
           }}>{!showPassword ? <FaEye size={12} /> : <FaEyeSlash size={12} />}  </button>
         </div>
       </div>
-      <button type="submit" className="flex h-8 w-full items-center justify-center gap-1.5 rounded bg-[#2563eb] text-xs font-semibold text-white shadow-sm transition hover:bg-[#1d5f98] disabled:cursor-not-allowed disabled:opacity-70">
+      <button type="submit" className="auth-buttons flex h-8 w-full items-center justify-center gap-1.5 rounded bg-[#2563eb] text-xs font-semibold text-white shadow-sm transition hover:bg-[#1d5f98] disabled:cursor-not-allowed disabled:opacity-70 auth-buttons">
         {loading ? <Spinner /> : <>Sign In <FiArrowRight size={13} /></>}
       </button>
       <p className="auth-login-help text-center text-[10px] text-slate-500">

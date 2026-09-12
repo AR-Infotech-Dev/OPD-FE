@@ -61,7 +61,7 @@ function ForgotPasswordForm() {
         </div>
       </div>
 
-      <button type="submit" className="flex h-8 w-full items-center justify-center gap-1.5 rounded bg-[#2563eb] text-xs font-semibold text-white shadow-sm transition hover:bg-[#1d5f98] disabled:cursor-not-allowed disabled:opacity-70" disabled={loading}>
+      <button type="submit" className="flex h-8 w-full items-center justify-center gap-1.5 rounded bg-[#2563eb] text-xs font-semibold text-white shadow-sm transition hover:bg-[#1d5f98] disabled:cursor-not-allowed disabled:opacity-70 auth-buttons" disabled={loading}>
         {loading ? (<> <Spinner /> Sending... </>) : (<> Send Verification <FiArrowRight size={13} /> </>)}
       </button>
 

@@ -1,12 +1,12 @@
-
 .ws-page-title {
-    --tw-text-opacity: 1;
-    color: rgb(31 41 55/var(--tw-text-opacity));
-    font-size: 1.25rem;
-    font-weight: 300;
-    line-height: 1.75rem;
-    margin-bottom: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55/var(--tw-text-opacity));
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.75rem;
+  margin-bottom: 1rem;
 }
+
 .form-group {
   margin-bottom: 1.5rem;
 }
@@ -35,16 +35,16 @@
 }
 
 .btn-primary {
-    background: linear-gradient(to right,#4f46e5,#6366f1);
-    color: #fff;
-    margin-right: 10px
+  background: linear-gradient(to right, #4f46e5, #6366f1);
+  color: #fff;
+  margin-right: 10px
 }
 
 .button-group {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-top: 20px
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 20px
 }
 
 /* LOGIN PREMIUM PALETTE START - remove this block to restore previous colors. */
@@ -64,16 +64,21 @@
 }
 
 .auth-visual-panel {
-  background: var(--auth-hero) !important;
+  /* background: var(--auth-hero) !important; */
+}
+
+.auth-buttons {
+  background-color: var(--primary);
+}
+.auth-links {
+  color: var(--primary);
 }
 
 .auth-visual-overlay {
-  background: linear-gradient(
-    105deg,
-    rgba(9, 24, 44, 0.97) 0%,
-    rgba(16, 35, 63, 0.88) 48%,
-    rgba(18, 55, 91, 0.62) 100%
-  ) !important;
+  background: linear-gradient(105deg,
+      rgba(9, 24, 44, 0.97) 0%,
+      rgba(16, 35, 63, 0.88) 48%,
+      rgba(18, 55, 91, 0.62) 100%) !important;
 }
 
 .auth-visual-title {
@@ -119,7 +124,7 @@
 }
 
 .auth-login-link {
-  color: var(--auth-primary) !important;
+  color: var(--primary) !important;
 }
 
 .auth-login-submit {
@@ -132,4 +137,5 @@
   border-color: var(--auth-primary-hover) !important;
   background: var(--auth-primary-hover) !important;
 }
+
 /* LOGIN PREMIUM PALETTE END */
