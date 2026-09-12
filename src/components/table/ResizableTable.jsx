@@ -3,8 +3,6 @@ import TableHeader from "./TableHeader";
 import TableSkeleton from "./TableSkeleton";
 import NoTableData from "./NoTableData";
 import ColumnArranger from "./ColumnArranger";
-import { useAuth } from "@auth/components/AuthProvider";
-import { hasFieldVisiblePermission } from "@auth/utils/permissions";
 import {
   ACTIONS_COLUMN,
   DEFAULT_COLUMN_WIDTH,
@@ -121,12 +119,9 @@ function ResizableTable({
   onToggleAllRows,
   defaultVisibleColumnKeys = [],
   allowSelection = true,
-  menuId,
   onVisibleColumnsChange,
 }) {
   
-  const { authSession } = useAuth();
-  const user = authSession?.user;
   const [columnWidths, setColumnWidths] = useState(() => getStoredWidths(storageKey));
   const [visibleColumnKeys, setVisibleColumnKeys] = useState(() => {
     return getInitialVisibleColumnKeys(columns, storageKey, defaultVisibleColumnKeys);
@@ -175,7 +170,6 @@ function ResizableTable({
         .map((key) => columns.find((column) => column.key === key))
         .filter(Boolean)
         .filter((column) => allowSelection || !column.checkbox)
-        .filter((column) => column.checkbox || column.className === "icon-col" || column.isAlwaysVisible || hasFieldVisiblePermission({ menuId, field: column, user }))
         .map((column) => ({
           ...column,
           currentWidth: Math.max(
@@ -200,7 +194,7 @@ function ResizableTable({
         },
       ];
     },
-    [actionColumnWidth, allowSelection, columnWidths, columns, menuId, shouldShowActions, user, visibleColumnKeys]
+    [actionColumnWidth, allowSelection, columnWidths, columns, shouldShowActions, visibleColumnKeys]
   );
 
   useEffect(() => {

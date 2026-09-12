@@ -1,3 +1,5 @@
+import { getMenus as getNavigationMenus } from '../../../auth/data/auth.service';
+import { saveMenuList } from '../../../auth/utils/authStorage';
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import {
@@ -28,6 +30,12 @@ export const useMenuMasterModule = ({ filterState }) => {
 
     if (fetchMenus.rejected.match(action)) {
       toast.error(action.payload || "Error while fetching menus");
+    }
+    if (fetchMenus.fulfilled.match(action)) {
+      try {
+        const navigation = await getNavigationMenus();
+        if (navigation.success) saveMenuList(navigation.data || []);
+      } catch { /* Keep existing navigation if its refresh fails. */ }
     }
   };
 

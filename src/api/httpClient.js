@@ -14,7 +14,7 @@ const shouldBypassCompanyIdFilter = (url = "", method = "GET") => {
     .replace(/^https?:\/\/[^/]+/, "")
     .replace(/\/+$/, "");
 
-  if (normalizedPath.includes("/permissions/save/")) return false;
+  if (normalizedPath.includes("/permissions/")) return false;
 
   if (normalizedMethod === "GET") return true;
 

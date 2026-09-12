@@ -34,10 +34,10 @@ export const verifyOtp = async ({ otp = "", newPassword = "", confirmPassword = 
     });
 }
 
-export const getPermissions = async (userId, companyId = "") => {
-    return await makeRequest(`/get-permissions/${userId}`, {
+export const getPermissions = async () => {
+    return await makeRequest("/my-permissions", {
         method: "POST",
-        body: { company_id: companyId },
+        body: {},
     });
 }
 

@@ -252,8 +252,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 24px;
-  padding: 0 8px;
+  min-height: 28px;
+  padding: 2px 8px;
   color: var(--text-secondary);
   font-size: 10px;
   font-weight: 700;
@@ -298,7 +298,8 @@ button {
   min-height: 28px;
   padding: 2px 8px;
   border-radius: 4px;
-  color: var(--text-primary);
+  /* color: var(--text-secondary); */
+  color: #374c62;
   background: var(--white);
   border-left: 3px solid transparent;
   border-right: 3px solid transparent;

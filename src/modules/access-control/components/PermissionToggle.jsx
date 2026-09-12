@@ -1,9 +1,10 @@
-function PermissionToggle({ checked, disabled, onChange }) {
+function PermissionToggle({ checked, disabled, onChange, label }) {
   return (
     <button
       type="button"
       disabled={disabled}
       aria-pressed={checked}
+      aria-label={label}
       onClick={() => !disabled && onChange(!checked)}
       className={`relative h-4 w-8 rounded-full transition-colors ${
         checked ? "bg-blue-600" : "bg-slate-300"

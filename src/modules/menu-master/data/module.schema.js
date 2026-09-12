@@ -1,44 +1,5 @@
 import { buildFallbackColumnsFromKeys } from "../../../utils/moduleStructure";
-import {
-  Accessibility,
-  BriefcaseBusiness,
-  Building2,
-  ContactRound,
-  FileText,
-  Folder,
-  Gauge,
-  LayoutGrid,
-  Mail,
-  Map,
-  MenuSquare,
-  NotepadText,
-  ShieldCheck,
-  Sparkles,
-  Ticket,
-  Users,
-  Workflow,
-} from "lucide-react";
 import { z } from "zod";
-
-export const ICONS = {
-  Accessibility,
-  BriefcaseBusiness,
-  Building2,
-  ContactRound,
-  FileText,
-  Folder,
-  Gauge,
-  LayoutGrid,
-  Mail,
-  Map,
-  MenuSquare,
-  NotepadText,
-  ShieldCheck,
-  Sparkles,
-  Ticket,
-  Users,
-  Workflow,
-};
 
 const FIXED_TABLE_COLUMNS = [
   { key: "select", className: "check-col", checkbox: true, width: 42, minWidth: 42, resizable: false },
@@ -88,17 +49,11 @@ export const menuMasterSchema = {
   savedFilters: [],
   form: {
     initialValues: {
-      menu_id: null,
-      module_name: null,
-      menuName: null,
-      module_desc: null,
-      menuLink: null,
-      table_name: null,
-      label: null,
-      plural_label: null,
-      iconName: null,
-      menuIndex: null,
-      status: "active",
+      menu_id: null, menu_name: '', module_name: '', module_description: '',
+      menu_link: '', table_name: '', label: '', plural_label: '', icon_name: 'folder',
+      is_parent: false,
+      parent_id: null,
+      status: 'active',
     },
     sections: [
       {
@@ -121,7 +76,22 @@ export const menuMasterSchema = {
             gridSpan: 4,
           },
           {
-            name: "module_desc",
+            name: "is_parent",
+            label: "Is this parent menu ?",
+            type: "radio",
+            gridSpan: 4,
+            options: [
+              { label: "Yes", value: true },
+              { label: "No", value: false },
+            ],
+          },
+        ],
+      },
+      {
+        columns: 3,
+        fields: [
+          {
+            name: "module_description",
             label: "Description",
             type: "text",
             gridSpan: 4,
@@ -211,17 +181,15 @@ export const menuMasterSchema = {
     ],
   },
 
-  // validationSchema: z.object({
-  //   module_name: z.string().min(1, "Module name is required"),
-  //   menu_name: z.string().min(1, "Menu name is required"),
-  //   menu_link: z.string().min(1, "Menu link is required"),
-  //   table_name: z.string().min(1, "Table name is required"),
-  // }),
   validationSchema: z.object({
-    module_name: z.string().nullable().transform(v => v ?? "").refine(v => v.trim() !== "", { message: "Module name is required" }),
-    menu_name: z.string().nullable().transform(v => v ?? "").refine(v => v.trim() !== "", { message: "Menu name is required" }),
-    menu_link: z.string().nullable().transform(v => v ?? "").refine(v => v.trim() !== "", { message: "Menu link is required" }),
-    table_name: z.string().nullable().transform(v => v ?? "").refine(v => v.trim() !== "", { message: "Table name is required" }),
+    is_parent: z.boolean().default(false),
+    menu_name: z.string().trim().min(1, 'Menu name is required'),
+    module_name: z.string().nullish(), menu_link: z.string().nullish(), table_name: z.string().nullish(),
+  }).superRefine((data, context) => {
+    if (data.is_parent) return;
+    for (const [field, label] of [['module_name', 'Module name'], ['menu_link', 'Menu link'], ['table_name', 'Table name']]) {
+      if (!data[field]?.trim()) context.addIssue({ code: 'custom', path: [field], message: label + ' is required' });
+    }
   })
 };
 

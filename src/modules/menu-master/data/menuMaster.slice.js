@@ -1,3 +1,4 @@
+import { menuPositions } from '../../../utils/menuTree';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteMenus, getMenuList, updateMenuPositions } from "./menuMaster.service";
 
@@ -42,12 +43,7 @@ export const deleteMenuItems = createAsyncThunk(
 export const saveMenuSequence = createAsyncThunk(
   "menuMaster/saveMenuSequence",
   async (rows, { rejectWithValue }) => {
-    const positions = rows
-      .map((menu, index) => ({
-        menu_id: menu?.menu_id,
-        menu_index: index + 1,
-      }))
-      .filter((item) => item.menu_id);
+    const positions = menuPositions(rows);
 
     if (!positions.length) {
       return rejectWithValue("No menu sequence found to save.");

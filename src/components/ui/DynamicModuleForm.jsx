@@ -9,8 +9,6 @@ import SmartSelectInput from "@formInputs/smartSelectInput";
 import ColorSwatches from "@formInputs/ColorSwatches";
 import IconPicker from "@formInputs/IconPicker";
 import FileUpload from "@formInputs/FileUpload";
-import { useAuth } from "@auth/components/AuthProvider";
-import { hasFieldEditablePermission, hasFieldVisiblePermission } from "@auth/utils/permissions";
 
 const SECTION_COLUMN_CLASS = {
   1: "grid grid-cols-12 gap-x-4 gap-y-5",
@@ -34,9 +32,7 @@ const FIELD_SPAN_CLASS = {
   12: "col-span-12",
 };
 
-function DynamicModuleForm({ sections = [], values = {}, onChange, onObjectSelect, addNewHandlers = {}, errors = {}, oldValues = {}, mode = '', menuId }) {
-  const { authSession } = useAuth();
-  const user = authSession?.user;
+function DynamicModuleForm({ sections = [], values = {}, onChange, onObjectSelect, addNewHandlers = {}, errors = {}, oldValues = {}, mode = '' }) {
 
   const getConditionalFlag = (field, key) => {
     const flag = field[key];
@@ -112,8 +108,7 @@ function DynamicModuleForm({ sections = [], values = {}, onChange, onObjectSelec
             ? field.visibleWhen(values, oldValues, mode)
             : true;
 
-          if (!isVisible) return false;
-          return field.alwaysVisible || hasFieldVisiblePermission({ menuId, field, user });
+          return isVisible;
         });
 
         if (!visibleFields.length) return null;
@@ -128,7 +123,6 @@ function DynamicModuleForm({ sections = [], values = {}, onChange, onObjectSelec
             }
             <div className={`mb-2 ${SECTION_COLUMN_CLASS[section.columns] || SECTION_COLUMN_CLASS[2]}`}>
               {visibleFields.map((field) => {
-                const canEditField = field.alwaysEditable || hasFieldEditablePermission({ menuId, field, user });
                 const isDisabled = getConditionalFlag(field, "disabled") || getConditionalFlag(field, "disabledWhen");
                 const isReadOnly =
                   getConditionalFlag(field, "readOnly") ||
@@ -139,7 +133,7 @@ function DynamicModuleForm({ sections = [], values = {}, onChange, onObjectSelec
                   ...field,
                   options: typeof field.options === "function" ? field.options(values) : field.options,
                   disabled: isDisabled,
-                  readOnly: isReadOnly || !canEditField,
+                  readOnly: isReadOnly,
                 };
                 const sectionColumns = Number(section.columns) || 2;
                 const defaultSpan = Math.max(1, Math.floor(12 / sectionColumns));

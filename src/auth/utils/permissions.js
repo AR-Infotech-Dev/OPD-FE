@@ -1,3 +1,5 @@
+import { hasMenuAccess, pickActionPermissions } from '../../utils/menuAccess';
+import { buildMenuTree, isParentMenu } from '../../utils/menuTree';
 import { getStoredMenuList, getStoredPermissions } from "./authStorage";
 import { getMenus, getPermissions } from "../data/auth.service";
 
@@ -54,97 +56,18 @@ export const hasMenuViewPermission = ({ menuId, pathname, user } = {}) => {
   if (!resolvedMenuId) return false;
 
   const permissions = getStoredPermissions();
-  const permission = permissions[String(resolvedMenuId)] || permissions[resolvedMenuId] || {};
-
-  return toBoolean(permission.view ?? permission.can_view);
-};
-
-export const getMenuPermission = (menuId) => {
-  if (!menuId) return {};
-  const permissions = getStoredPermissions();
-  return permissions[String(menuId)] || permissions[menuId] || {};
+  return hasMenuAccess(resolvedMenuId, flattenMenus(buildMenuTree(getStoredMenuList())), permissions);
 };
 
 export const hasMenuActionPermission = ({ menuId, action, user } = {}) => {
   if (user?.role_slug === "super_admin") return true;
 
   // Same helper is used for add/edit/delete buttons, so every page reads permission in one simple way.
-  const permission = getMenuPermission(menuId);
-  return toBoolean(permission[action] ?? permission[`can_${action}`]);
-};
-
-const normalizeFieldKey = (value = "") =>
-  String(value || "")
-    .trim()
-    .replace(/\s+/g, "")
-    .replace(/_/g, "")
-    .toLowerCase();
-
-export const getFieldPermission = ({ menuId, field } = {}) => {
-  const permission = getMenuPermission(menuId);
-  const fields = Array.isArray(permission.fields) ? permission.fields : [];
-
-  if (!fields.length) return null;
-
-  const fieldKeys = [
-    field?.field_id,
-    field?.fieldID,
-    field?.id,
-    field?._id,
-    field?.name,
-    field?.key,
-    field?.value,
-    field?.field_name,
-    field?.fieldName,
-    field?.column_name,
-    field?.label,
-  ].map(normalizeFieldKey);
-
-  return fields.find((item) => {
-    const savedKeys = [
-      item?.field_id,
-      item?.fieldID,
-      item?.id,
-      item?.name,
-      item?.key,
-      item?.field_name,
-      item?.fieldName,
-      item?.column_name,
-      item?.label,
-    ].map(normalizeFieldKey);
-
-    return savedKeys.some((key) => key && fieldKeys.includes(key));
-  }) || null;
-};
-
-export const hasFieldVisiblePermission = ({ menuId, field, user } = {}) => {
-  if (user?.role_slug === "super_admin") return true;
-
-  const permission = getMenuPermission(menuId);
-  const fields = Array.isArray(permission.fields) ? permission.fields : [];
-  if (!fields.length) return true;
-
-  const fieldPermission = getFieldPermission({ menuId, field });
-  if (!fieldPermission) return true;
-
-  return toBoolean(fieldPermission.visible ?? fieldPermission.can_view ?? fieldPermission.enabled);
-};
-
-export const hasFieldEditablePermission = ({ menuId, field, user } = {}) => {
-  if (user?.role_slug === "super_admin") return true;
-
-  const permission = getMenuPermission(menuId);
-  const fields = Array.isArray(permission.fields) ? permission.fields : [];
-  if (!fields.length) return true;
-
-  const fieldPermission = getFieldPermission({ menuId, field });
-  if (!fieldPermission) return true;
-
-  return toBoolean(fieldPermission.editable ?? fieldPermission.can_edit);
+  return hasMenuAccess(menuId, flattenMenus(buildMenuTree(getStoredMenuList())), getStoredPermissions(), action);
 };
 
 export const getFirstAllowedPath = ({ user } = {}) => {
-  const menus = flattenMenus(getStoredMenuList());
+  const menus = flattenMenus(buildAllowedMenuTree(getStoredMenuList(), getStoredPermissions(), user));
   const first = menus.find((menu) =>
     normalizePath(getMenuLink(menu)) && hasMenuViewPermission({ menuId: getMenuId(menu), user })
   );
@@ -152,17 +75,19 @@ export const getFirstAllowedPath = ({ user } = {}) => {
 };
 
 export const normalizePermissionMap = (payload = {}) => {
-  const source = getPermissionSource(payload);
+  let source = getPermissionSource(payload);
+  if (source?.permissions !== undefined) source = source.permissions;
+  if (typeof source === 'string') { try { source = JSON.parse(source); } catch { source = {}; } }
 
   if (Array.isArray(source)) {
-    return source.reduce((accumulator, item) => {
+    return pickActionPermissions(source.reduce((accumulator, item) => {
       const menuId = item?.menu_id || item?.menuID || item?.menuId || item?.id;
       if (menuId) accumulator[String(menuId)] = item;
       return accumulator;
-    }, {});
+    }, {}));
   }
 
-  return source && typeof source === "object" ? source : {};
+  return pickActionPermissions(source);
 };
 
 export const buildMenusFromPermissions = (permissions = {}) => {
@@ -176,10 +101,13 @@ export const buildMenusFromPermissions = (permissions = {}) => {
       const menuId = getMenuId(menu) || permission?.menu_id || permission?.menuID || permission?.menuId || permissionKey;
       const menuLink = getMenuLink(menu) || permission?.menu_link || permission?.menuLink || permission?.path;
 
-      if (!menuId || !menuLink) return null;
+      if (!menuId || (!menuLink && !isParentMenu(menu))) return null;
 
       return {
         menu_id: menuId,
+        is_parent: isParentMenu(menu),
+        menu_index: menu.menu_index,
+        status: menu.status,
         menuName: getMenuLabel(menu),
         menu_link: menuLink,
         icon_name: getMenuIcon(menu),
@@ -230,28 +158,23 @@ export const fetchMenuList = async (options = {}) => {
   }
 };
 
-export const canViewMenu = (menu = {}, permissions = getStoredPermissions(), user = {}) => {
+export const canViewMenu = (menu = {}, permissions = getStoredPermissions(), user = {}, menus = getStoredMenuList()) => {
   if (user?.role_slug === "super_admin") return true;
 
   const menuId = getMenuId(menu);
   if (!menuId) return false;
 
-  const permission = permissions[String(menuId)] || permissions[menuId] || {};
-  return toBoolean(permission.view ?? permission.can_view);
+  return hasMenuAccess(menuId, flattenMenus(buildMenuTree(menus)), permissions);
 };
 
-export const buildAllowedMenuTree = (menus = [], permissions = getStoredPermissions(), user = {}) =>
-  menus
-    .map((menu) => {
-      const children = menu?.subMenu || menu?.submenu || menu?.children || [];
-      const allowedChildren = children.filter((child) => canViewMenu(child, permissions, user));
-      const parentAllowed = canViewMenu(menu, permissions, user);
-
-      if (!parentAllowed && allowedChildren.length === 0) return null;
-
-      return {
-        ...menu,
-        subMenu: allowedChildren,
-      };
-    })
-    .filter(Boolean);
+export const buildAllowedMenuTree = (menus = [], permissions = getStoredPermissions(), user = {}) => {
+  const tree = buildMenuTree(menus), allMenus = flattenMenus(tree);
+  const prune = rows => rows.map(menu => {
+    if (menu.status && menu.status !== 'active') return null;
+    if (user?.role_slug !== 'super_admin' && !hasMenuAccess(getMenuId(menu), allMenus, permissions)) return null;
+    const children = prune(menu.subMenu || []);
+    if (isParentMenu(menu) && !children.length && user?.role_slug !== 'super_admin') return null;
+    return {...menu, subMenu: children};
+  }).filter(Boolean);
+  return prune(tree);
+};

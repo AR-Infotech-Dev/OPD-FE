@@ -19,36 +19,13 @@ function MenuMasterModulePage({ menu_id }) {
   const permissions = useMenuPermissions(resolvedMenuID);
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
-
-  const {
-    filterState,
-    setSearchText,
-    applyFilterPayload,
-    clearFilters,
-  } = useModuleFilters("menu-master");
-
-  const {
-    menuList,
-    loading,
-    deleting,
-    savingSequence,
-    sequenceDirty,
-    getMenus,
-    handleDeleteMenu,
-    handleSortChange,
-    handleSaveSequence,
-  } = useMenuMasterModule({ filterState });
-
+  const { filterState, setSearchText, applyFilterPayload, clearFilters, } = useModuleFilters("menu-master");
+  const { menuList, loading, deleting, savingSequence, sequenceDirty, getMenus, handleDeleteMenu, handleSortChange, handleSaveSequence, } = useMenuMasterModule({ filterState });
   const { resolvedFilterFields } = useMenuMasterFilters({ resolvedMenuID });
 
   useEffect(() => {
     getMenus();
-  }, [
-    filterState.searchText,
-    filterState.order,
-    filterState.order_by,
-    JSON.stringify(filterState.filters),
-  ]);
+  }, [filterState.searchText, filterState.order, filterState.order_by, JSON.stringify(filterState.filters),]);
 
   const openCreateFlyout = () => {
     setSelectedMenu(null);
@@ -109,7 +86,7 @@ function MenuMasterModulePage({ menu_id }) {
             rows={menuList}
             canEdit={permissions.canEdit}
             canDelete={permissions.canDelete}
-            canSort={permissions.canEdit}
+            canSort={permissions.canEdit && !savingSequence && !deleting && !filterState.searchText && !filterState.filters?.length}
             onEdit={openEditFlyout}
             onDelete={handleDeleteMenu}
             onConfigure={openEditFlyout}

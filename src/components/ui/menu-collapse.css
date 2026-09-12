@@ -1,0 +1,26 @@
+.menu-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 240ms cubic-bezier(0.4, 0, 0.2, 1), opacity 180ms ease, visibility 0s 240ms;
+}
+.menu-collapse.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.menu-collapse-content {
+  min-height: 0;
+  overflow: hidden;
+}
+.menu-collapse.is-settled > .menu-collapse-content { overflow: visible; }
+.menu-expand-chevron {
+  flex-shrink: 0;
+  transition: transform 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.menu-expand-chevron.is-collapsed { transform: rotate(-90deg); }
+@media (prefers-reduced-motion: reduce) {
+  .menu-collapse, .menu-expand-chevron, .sidebar-group-toggle .menu-expand-chevron { transition: none; }
+}

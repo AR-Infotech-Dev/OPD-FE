@@ -1,3 +1,4 @@
+import { isParentMenu } from '../../../utils/menuTree';
 import { menuMasterSchema } from "../data/module.schema";
 
 export const getMenuIdentifier = (menu = {}) => menu?.menu_id ?? menu?.menuID ?? menu?.id;
@@ -12,6 +13,9 @@ export const normalizeMenuData = (selectedMenu = {}) => ({
   module_desc: selectedMenu?.module_desc || "",
   menu_link: selectedMenu?.menu_link || selectedMenu?.menuLink || "",
   menuLink: selectedMenu?.menuLink || selectedMenu?.menu_link || "",
+  is_parent: isParentMenu(selectedMenu),
+  parent_id: selectedMenu?.parent_id ?? selectedMenu?.parentID ?? null,
+  module_description: selectedMenu?.module_description || selectedMenu?.module_desc || "",
   parentID: selectedMenu?.parentID || selectedMenu?.parent_id || "",
   icon_name: selectedMenu?.icon_name || selectedMenu?.iconName || "",
   iconName: selectedMenu?.iconName || selectedMenu?.icon_name || "",

@@ -19,6 +19,11 @@ function MenuForm({ isOpen, onClose, selectedMenu, onAfterSave, menu_id: permiss
 
 
 
+  const sections = menuMasterSchema.form.sections.map(section => ({
+    ...section,
+    fields: section.fields.filter(field => !formData.is_parent || !['module_name', 'menu_link', 'table_name', 'label', 'plural_label'].includes(field.name)),
+  })).filter(section => section.fields.length);
+
   return (
     <FlyoutPanel
       isOpen={isOpen}
@@ -33,7 +38,7 @@ function MenuForm({ isOpen, onClose, selectedMenu, onAfterSave, menu_id: permiss
       }
       footer={
         <ActionButton
-          disabled={loading}
+          disabled={loading || fetchingMenu}
           variant="flyoutPrimary"
           onClick={handleSave}
         >
@@ -46,8 +51,15 @@ function MenuForm({ isOpen, onClose, selectedMenu, onAfterSave, menu_id: permiss
         <div className="ws-main-container">
           
             <div className="rounded-xl bg-white px-4 py-3">
+              {/* <label className="mb-4 flex items-start gap-3 rounded-lg border border-slate-200 p-3">
+                <input type="checkbox" checked={Boolean(formData.is_parent)} disabled={loading || fetchingMenu}
+                  onChange={event => handleChange({target: {name: 'is_parent', value: event.target.checked}})} />
+                <span><span className="block text-sm font-semibold">Parent menu</span>
+                  <span className="text-xs text-slate-500">Groups child menus in an accordion. No menu link or database table is needed.</span>
+                </span>
+              </label> */}
               <DynamicModuleForm
-                sections={menuMasterSchema.form.sections}
+                sections={sections}
                 values={formData}
                 onChange={handleChange}
                 errors={errors}

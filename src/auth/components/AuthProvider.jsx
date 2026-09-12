@@ -1,49 +1,31 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { getCurrentSession, logoutFromLocalAuth } from "@auth/utils/authStorage";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { getCurrentSession, logoutFromLocalAuth } from '@auth/utils/authStorage';
+import { useNavigate } from 'react-router-dom';
+
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const navigate = useNavigate();
-  const [authSession, setAuthSession] = useState(null);
+  // Login fetches and stores permissions. Reloads restore the saved session.
+  const [authSession, setAuthSession] = useState(getCurrentSession);
 
   useEffect(() => {
-    const session = getCurrentSession();
-    if (session) {
-      setAuthSession(session);
-    }
-
-    const handleAuthLogout = () => {
+    const handleLogout = () => {
       setAuthSession(null);
-      navigate("/login", { replace: true });
+      navigate('/login', { replace: true });
     };
-
-    window.addEventListener("crm:auth-logout", handleAuthLogout);
-    return () => window.removeEventListener("crm:auth-logout", handleAuthLogout);
+    window.addEventListener('crm:auth-logout', handleLogout);
+    return () => window.removeEventListener('crm:auth-logout', handleLogout);
   }, [navigate]);
 
   const value = useMemo(() => ({
     authSession,
-    login(session) {
-      setAuthSession(session);
-    },
-    logout() {
-      logoutFromLocalAuth();
-      setAuthSession(null);
-      navigate("/login", { replace: true });
-    }
-  }), [authSession, navigate]);
+    login(session) { setAuthSession(session); },
+    logout() { logoutFromLocalAuth(); }
+  }), [authSession]);
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);
-
 export default AuthProvider;
-
-
-
