@@ -31,6 +31,8 @@ export const normalizeProfile = (user = {}) => ({
   roleName: getValue(user.roleName, user.role_name, user.role, user.role_slug),
   company_id: getValue(user.company_id, user.default_company),
   company_name: getValue(user.company_name, user.companyName, user.company),
+  clinic_id: getValue(user.clinic_id),
+  clinic_name: getValue(user.clinic_name,),
   is_approver: getValue(user.is_approver, "no"),
   google_location: getValue(user.google_location),
   status: getValue(user.status, "active"),

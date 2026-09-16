@@ -1,4 +1,4 @@
-import { Building2, ChevronDown, FileBarChart, LogOut, Menu, UserRound, } from "lucide-react";
+import {Hospital , ChevronDown, LogOut, Menu, UserRound, } from "lucide-react";
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { useAuth } from "@auth/components/AuthProvider";
 import Clock from "@components/ui/Clock"
 import { ALLOW_NOTIFICATIONS } from "@/api/config";
 
-const getCompanyName = (user = {}) => user?.company_name || "";
+const getClinicName = (user = {}) => user?.clinic_name || "";
 
 function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
     user?.adminId ||
     user?.user_id ||
     user?.id;
-  const companyName = getCompanyName(user);
+  const clinicName = getClinicName(user);
 
   useEffect(() => {
     try {
@@ -109,11 +109,11 @@ function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
           </div>
         </div>
         <div className="topbar-right">
-          {companyName && (
-            <span className="topbar-company" title={companyName}>
+          {clinicName && (
+            <span className="topbar-company" title={clinicName}>
 
-              <Building2 size={14} />
-              <span>{companyName}</span>
+              <Hospital size={14} color={"#f44336e8"} />
+              <span>{clinicName}</span>
             </span>
           )}
           

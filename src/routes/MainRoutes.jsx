@@ -17,14 +17,13 @@ const CompanyMasterModulePage = lazy(() => import("@modules/company-master/Compa
 const AccessControlModulePage = lazy(() => import("@modules/access-control/AccessControlModulePage"));
 const UserProfilePage = lazy(() => import("@modules/profile/UserProfilePage"));
 const CompanySettingModulePage = lazy(() => import("@modules/company-setting/CompanySettingModulePage"));
+const ClinicSettingModulePage = lazy(() => import("@modules/clinic-settings/ClinicSettingModulePage"));
 const UserRoleMasterPage = lazy(() => import("@modules/user-role/UserRoleModulePage"));
 
 const withPermission = (menuId, element) => (
   <PermissionRoute menuId={menuId}>{element}</PermissionRoute>
 );
 
-// Frontend needs to know which component should open for each menuLink.
-// The route path and menu_id still come from the API menu list.
 const menuRouteComponents = {
   "/dashboard": Dashboard,
   "/users": UsersModulePage,
@@ -36,6 +35,7 @@ const menuRouteComponents = {
   "/company-master": CompanyMasterModulePage,
   "/access-control": AccessControlModulePage,
   "/company-setting": CompanySettingModulePage,
+  "/clinic-settings": ClinicSettingModulePage,
   "/users-roles": UserRoleMasterPage,
 };
 

@@ -1,7 +1,7 @@
 ﻿.flyout-overlay {
   position: absolute;
   right: 0;
-  padding-right:8px;
+  padding-right: 8px;
   bottom: 0px;
   left: 0;
   z-index: 19;
@@ -333,12 +333,16 @@
 .ql-container {
   min-height: 150px;
   border-radius: 0 0 0px 0px;
-  border-color: var(--border-strong);
 }
 
-.ql-toolbar {
-  border-radius: 0px 0px 0 0;
-  border-color: var(--border-strong);
+.ql-toolbar.ql-snow {
+  background-color: #f3f4f6;
+  border: none !important;
+}
+
+.ql-container.ql-snow {
+  background-color: #f3f4f6;
+  border: none !important;
 }
 
 .flowups-rich-text-editor .ql-editor {
@@ -475,27 +479,49 @@
 input .py-2 {
   padding: .3rem;
 }
+
 /* Keep the backdrop present until the panel finishes sliding out. */
-.flyout-overlay { overflow: hidden; }
-.flyout-overlay.close { animation: flyoutBackdropOut .2s ease forwards; }
-.flyout-overlay.close .flyout-panel { pointer-events: none; }
-@keyframes flyoutBackdropOut {
-  from { background-color: #0d111d63; }
-  to { background-color: transparent; }
+.flyout-overlay {
+  overflow: hidden;
 }
+
+.flyout-overlay.close {
+  animation: flyoutBackdropOut .2s ease forwards;
+}
+
+.flyout-overlay.close .flyout-panel {
+  pointer-events: none;
+}
+
+@keyframes flyoutBackdropOut {
+  from {
+    background-color: #0d111d63;
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .flyout-panel.open, .flyout-panel.close,
-  .flyout-overlay.close, .flyout-close { animation-duration: 1ms; }
+
+  .flyout-panel.open,
+  .flyout-panel.close,
+  .flyout-overlay.close,
+  .flyout-close {
+    animation-duration: 1ms;
+  }
 }
 
 /* Shared flyout loading state fills the space between header and footer. */
-.flyout-panel > .flyout-body-loading {
+.flyout-panel>.flyout-body-loading {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
   scrollbar-gutter: auto;
 }
+
 .flyout-loading-illustration {
   display: flex;
   flex-direction: column;
@@ -504,6 +530,23 @@ input .py-2 {
   text-align: center;
   gap: 6px;
 }
-.flyout-loading-illustration img { display: block; width: 200px; max-width: 100%; height: auto; }
-.flyout-loading-illustration .flyout-loading-title { margin: 0; font-size: 14px; font-weight: 500; color: #334155; }
-.flyout-loading-illustration .flyout-loading-description { margin: 0; font-size: 12px; color: #64748b; }
+
+.flyout-loading-illustration img {
+  display: block;
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+}
+
+.flyout-loading-illustration .flyout-loading-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.flyout-loading-illustration .flyout-loading-description {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
