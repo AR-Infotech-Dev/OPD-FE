@@ -82,7 +82,6 @@ export const useCategoryForm = ({ isOpen, onClose, selectedCategory, onAfterSave
 
       parent_id: formData.is_parent === "yes" ? null : Number(formData.parent_id),
       children: (formData.children || []).map((child, index) => ({ category_id: child.category_id, categories_index: index + 1, })), };
-    console.log("SAVE PAYLOAD:", payload);
     const result = categoryModuleSchema.validationSchema.safeParse(payload);
     if (!result.success) {
       const nextErrors = {};

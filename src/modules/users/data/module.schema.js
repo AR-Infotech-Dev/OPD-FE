@@ -14,7 +14,7 @@ export const usersModuleSchema = {
   title: "Users",
   description: "Manage users, roles, company assignment, and approval access from one place.",
   menu_id: 20,
-  primaryKey: 'adminID',
+  primaryKey: 'user_id',
   api: {
     list: "/users",
     delete: "/users/delete",
@@ -60,7 +60,7 @@ export const usersModuleSchema = {
     ...default_filter_fields,
   },
   defaultColumns: ["name", "userName", "email", "contactNo", "roleID", "status", "company_id"],
-  skipFields: ['default_company', "user_setting", "gfcmToken", "otp", "country_code", "otp_exp_time", "g_cal_token", "one_drive_access_token", "is_google_sync", "is_one_drive_sync", "ftoken", "isVerified", "photo", "adminID", "latitude", "longitude", "roleOfUser", "password"],
+  skipFields: ['default_company', "user_setting", "gfcmToken", "otp", "country_code", "otp_exp_time", "g_cal_token", "one_drive_access_token", "is_google_sync", "is_one_drive_sync", "ftoken", "isVerified", "photo", "user_id", "latitude", "longitude", "roleOfUser", "password"],
   tableCellConfig: [
     { column_name: "name", type: "person" },
     { column_name: "userName", type: "person" },
@@ -83,7 +83,7 @@ export const usersModuleSchema = {
   savedFilters: [],
   form: {
     initialValues: {
-      adminID: null,
+      user_id: null,
       name: null,
       default_company: null,
       time_zone: "Asia/Kolkata",
