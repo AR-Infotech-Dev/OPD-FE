@@ -19,6 +19,8 @@ const UserProfilePage = lazy(() => import("@modules/profile/UserProfilePage"));
 const CompanySettingModulePage = lazy(() => import("@modules/company-setting/CompanySettingModulePage"));
 const ClinicSettingModulePage = lazy(() => import("@modules/clinic-settings/ClinicSettingModulePage"));
 const UserRoleMasterPage = lazy(() => import("@modules/user-role/UserRoleModulePage"));
+const MedicineMasterPage = lazy(() => import("@modules/medicine-master/MedicineModulePage"));
+
 const LabModulePage = lazy(() => import("@modules/lab/LabModulePage"));
 const DepartmentsModulePage= lazy(() => import("@modules/departments/DepartmentsModulePage"));
 const AppointmentModulePage = lazy( () => import("@modules/appointment/AppointmentModulePage") );
@@ -39,6 +41,7 @@ const menuRouteComponents = {
   "/company-setting": CompanySettingModulePage,
   "/clinic-settings": ClinicSettingModulePage,
   "/users-roles": UserRoleMasterPage,
+  "/medicine-master": MedicineMasterPage,
   "/lab": LabModulePage,
   "/departments": DepartmentsModulePage,
   "/appointments": AppointmentModulePage,
