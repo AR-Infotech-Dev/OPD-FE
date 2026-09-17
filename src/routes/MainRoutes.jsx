@@ -21,7 +21,12 @@ const ClinicSettingModulePage = lazy(() => import("@modules/clinic-settings/Clin
 
 const PatientsModulePage = lazy(() => import("@modules/patients/PatientsModulePage"));
 const DoctorsModulePage = lazy(() => import("@modules/doctors/DoctorsModulePage"));
+const UserRoleMasterPage = lazy(() => import("@modules/user-role/UserRoleModulePage"));
+const MedicineMasterPage = lazy(() => import("@modules/medicine-master/MedicineModulePage"));
 
+const LabModulePage = lazy(() => import("@modules/lab/LabModulePage"));
+const DepartmentsModulePage= lazy(() => import("@modules/departments/DepartmentsModulePage"));
+const AppointmentModulePage = lazy( () => import("@modules/appointment/AppointmentModulePage") );
 const withPermission = (menuId, element) => (
   <PermissionRoute menuId={menuId}>{element}</PermissionRoute>
 );
@@ -41,6 +46,11 @@ const menuRouteComponents = {
   "/clinic-settings": ClinicSettingModulePage,
   "/patients": PatientsModulePage,
   "/doctors": DoctorsModulePage,
+  "/users-roles": UserRoleMasterPage,
+  "/medicine-master": MedicineMasterPage,
+  "/lab": LabModulePage,
+  "/departments": DepartmentsModulePage,
+  "/appointments": AppointmentModulePage,
 };
 
 function DefaultMenuRedirect() {

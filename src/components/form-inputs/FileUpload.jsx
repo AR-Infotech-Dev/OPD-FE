@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { FileText, Upload, X } from "lucide-react";
 import DefaultLabel from "./DefaultLabel";
 import ValidationError from "./ValidationError";
+import { API_SERVER_URL } from "@/api/config";
 
 const toFileArray = (value) => {
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -16,8 +17,13 @@ const formatFileSize = (bytes) => {
 };
 
 const isImageFile = (file) => {
+
+  if (typeof file === "string") {
+    if (String(file || "").startsWith("images/")) return true;
+    return /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(String(file || ""));
+  }
   if (String(file?.type || "").startsWith("image/")) return true;
-  return /\.(png|jpe?g|webp|gif|svg)$/i.test(String(file?.name || file?.file_name || file?.url || ""));
+  return /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(String(file?.name || file?.file_name || file?.url || ""));
 };
 
 function ImagePreview({ file }) {
@@ -28,6 +34,10 @@ function ImagePreview({ file }) {
       const objectUrl = URL.createObjectURL(file);
       setPreviewUrl(objectUrl);
       return () => URL.revokeObjectURL(objectUrl);
+    }
+    if (typeof file === "string") {
+      setPreviewUrl(`${API_SERVER_URL}${file}` || "");
+      return;
     }
 
     setPreviewUrl(file?.url || file?.preview_url || "");
@@ -114,9 +124,8 @@ function FileUpload({ field, value, onChange, error }) {
       />
 
       <div
-        className={`flex min-h-24 flex-col items-center justify-center gap-2 rounded border border-dashed px-4 py-3 text-center transition-colors ${
-          dragging ? "border-blue-500 bg-blue-50" : "border-slate-300 bg-slate-50"
-        } ${isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:border-blue-400 hover:bg-blue-50/50"}`}
+        className={`flex min-h-24 flex-col items-center justify-center gap-2 rounded border border-dashed px-4 py-3 text-center transition-colors ${dragging ? "border-blue-500 bg-blue-50" : "border-slate-300 bg-slate-50"
+          } ${isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer hover:border-blue-400 hover:bg-blue-50/50"}`}
         onClick={() => !isDisabled && inputRef.current?.click()}
         onDragEnter={(event) => { event.preventDefault(); if (!isDisabled) setDragging(true); }}
         onDragOver={(event) => event.preventDefault()}
@@ -143,6 +152,11 @@ function FileUpload({ field, value, onChange, error }) {
         <div className="mt-1 divide-y divide-slate-200 rounded border border-slate-200 bg-white">
           {files.map((file, index) => (
             <div className="flex min-w-0 items-center gap-2 px-3 py-2" key={`${file.name || file.file_name || "file"}-${index}`}>
+              {console.log(file)}
+              {console.log(field)}
+              {console.log(isImageFile(file))}
+              {console.log(field.showPreview && isImageFile(file))}
+
               {field.showPreview && isImageFile(file)
                 ? <ImagePreview file={file} />
                 : <FileText size={16} className="shrink-0 text-slate-500" />}

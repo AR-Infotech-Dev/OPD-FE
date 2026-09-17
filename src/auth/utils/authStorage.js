@@ -3,7 +3,7 @@ const USER_KEY = "user";
 const PERMISSIONS_KEY = "permissions";
 const MENU_KEY = "menus";
 
-export const getUserAuthId = (user = {}) => user?.adminID || "";
+export const getUserAuthId = (user = {}) => user?.user_id || "";
 
 const safeJsonParse = (value, fallback = null) => {
   if (!value || value === "undefined") return fallback;

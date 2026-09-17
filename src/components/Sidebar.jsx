@@ -19,7 +19,7 @@ const buildSidebar = (menus = [], permissions = {}, user = {}) => {
 
 function NavigationMenu({ group, collapsedGroups, setCollapsedGroups, onSelectModule }) {
   const collapsed = Boolean(collapsedGroups[group.id]);
-  
+
   if (group.isParent || group.items.length) return (
     <div className="sidebar-group">
       <button type="button" className="sidebar-group-title sidebar-group-toggle" aria-expanded={!collapsed}

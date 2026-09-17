@@ -63,16 +63,18 @@ function DynamicModuleForm({ sections = [], values = {}, onChange, onObjectSelec
       case "editor":
         return <RichTextEditor field={field} onChange={onChange} value={value} error={errors[field.name]} />;
         break;
+      case "smartselect":
       case "smartSelect":
-        return <SmartSelect
-          field={field}
-          value={value}
-          onSelect={onChange}
-          onObjectSelect={(item) => onObjectSelect?.(field, item)}
-          config={field.config}
-          error={errors[field.name]}
-        />
-        break;
+        return (
+          <SmartSelect
+            field={field}
+            value={value}
+            onSelect={onChange}
+            onObjectSelect={(item) => onObjectSelect?.(field, item)}
+            config={field.config}
+            error={errors[field.name]}
+          />
+        );
       case "smartSelectInput":
         return <SmartSelectInput
           id={field.id || field.name}

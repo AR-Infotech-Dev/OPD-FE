@@ -50,6 +50,7 @@ function LoginForm() {
       };
 
       saveAuthSession(session);
+      
       const permissions = await fetchUserPermissions(session.authid, session.user?.company_id || session.user?.default_company || "");
       const menus = await fetchMenuList({
         fallbackPermissions: permissions,

@@ -20,7 +20,7 @@ export const toDateInput = (value) => {
 };
 
 export const normalizeProfile = (user = {}) => ({
-  adminID: user.adminID || "",
+  user_id: user.user_id || "",
   name: getValue(user.name),
   email: getValue(user.email),
   dateOfBirth: toDateInput(user.dateOfBirth),

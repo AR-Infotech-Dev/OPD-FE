@@ -11,19 +11,19 @@ import useMenuPermissions from "@auth/utils/useMenuPermissions";
 
 import CompanyMasterForm from "./components/CompanyMasterForm";
 import CompanyMasterTableRow from "./components/CompanyMasterTableRow";
-import { companyMasterSchema } from "./data/module.schema";
+import { appointmentSchema} from "./data/module.schema";
 import { useCompanyMasterModule } from "./hooks/useCompanyMasterModule";
 import { useCompanyMasterTableConfig } from "./hooks/useCompanyMasterTableConfig";
 import { Upload } from "lucide-react";
 
-function CompanyMasterModulePage({ menu_id }) {
-  const resolvedMenuID = menu_id || companyMasterSchema.menu_id || null;
+function AppointmentModulePage({ menu_id }) {
+  const resolvedMenuID = menu_id || appointmentSchema.menu_id || null;
   const permissions = useMenuPermissions(resolvedMenuID);
-  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
 
   const { filterState, setSearchText, applyFilterPayload, setSort, clearFilters } = useModuleFilters(
-    "company-master"
+    "appointment"
   );
 
   const {
@@ -88,8 +88,8 @@ function CompanyMasterModulePage({ menu_id }) {
   return (
     <>
       <ModulePageLayout
-        title={companyMasterSchema.title}
-        description={companyMasterSchema.description}
+        title={appointmentSchema.title}
+        description={appointmentSchema.description}
         controls={
           <ModuleControls
             canCreate={permissions.canAdd}
@@ -106,7 +106,7 @@ function CompanyMasterModulePage({ menu_id }) {
               <DynamicFilter
                 filterState={filterState}
                 fields={resolvedFilterFields}
-                savedFilters={companyMasterSchema.savedFilters}
+                savedFilters={appointmentSchema.savedFilters}
                 onSearch={setSearchText}
                 onApplyFilters={applyFilterPayload}
                 onSaveFilter={() => { }}
