@@ -7,6 +7,7 @@ import menuMasterReducer from "@modules/menu-master/data/menuMaster.slice";
 import userroleReducer from "@modules/user-role/data/userrole.slice";
 import labReducer from "@modules/lab/data/lab.slice";
 import departmentsReducer from "@modules/departments/data/departments.slice";
+import appointmentReducer from "@modules/appointment/data/appointment.slice";
 export const store = configureStore({
   reducer: {
     moduleFilters: moduleFiltersReducer,
@@ -17,6 +18,7 @@ export const store = configureStore({
     userrole: userroleReducer,
     lab: labReducer,
     departments:departmentsReducer,
+    appointment: appointmentReducer,
   },
 });
 

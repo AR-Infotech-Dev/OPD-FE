@@ -49,7 +49,7 @@ export const useUsersModule = ({ filterState }) => {
         }
 
         dispatch(usersActions.setUsersSelection(
-            userList.map((row) => row?._id ?? row?.id ?? row?.adminID).filter(Boolean)
+            userList.map((row) => row?._id ?? row?.id ?? row?.user_id).filter(Boolean)
         ))
     };
 
@@ -70,7 +70,7 @@ export const useUsersModule = ({ filterState }) => {
     };
 
     const handleDeleteRow = async (row) => {
-        const rowId = row?._id ?? row?.id ?? row?.adminID;
+        const rowId = row?._id ?? row?.id ?? row?.user_id;
         if (!rowId) { toast.error("User id not found."); return; }
         const action = await dispatch(deleteUsers([rowId]));
 

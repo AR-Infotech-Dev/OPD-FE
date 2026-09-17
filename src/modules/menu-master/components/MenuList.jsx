@@ -83,7 +83,7 @@ function GroupDropZone({ id, disabled, inactive = false, label, depth = 0 }) {
   const { setNodeRef, isOver } = useDroppable({ id: 'group:' + id, disabled: disabled || inactive });
   if (disabled) return null;
   return <div ref={setNodeRef} style={{ marginLeft: depth * 20 }}
-    className={'my-1 rounded border border-dashed px-4 py-3 text-xs ' + (isOver ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 text-slate-400')}>
+    className={'my-1 rounded border border-dashed px-4 py-1 text-xs ' + (isOver ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-slate-200 text-slate-400')}>
     {label}
   </div>;
 }
@@ -112,7 +112,7 @@ function MenuList({ rows = [], loading = false, canEdit = true, canDelete = true
           onToggle={() => setCollapsed(current => ({ ...current, [id]: !current[id] }))}
           onMoveOut={() => onSortChange?.(moveMenu(rows, id, '0', true))} />
         {isParentMenu(menu) && (
-          <div className='py-1'>
+          <div className={`${expanded ? 'py-1' : 'py-0'}`}>
             <GroupDropZone id={id} disabled={!canSort} inactive={!visible} depth={depth + 1} label={'Drop into ' + getMenuName(menu)} />
             <MenuCollapse open={expanded}>{renderRows(menu.subMenu, depth + 1, visible && expanded)}</MenuCollapse>
           </div>
@@ -121,7 +121,7 @@ function MenuList({ rows = [], loading = false, canEdit = true, canDelete = true
     })}
   </SortableContext>;
 
-  if (loading) return <div className="h-full w-full bg-white p-4"><SpinnerIllustration /></div>;
+  if (loading) return <div className="h-full w-full flex items-center h-full justify-center"><SpinnerIllustration /></div>;
   if (!rows.length)
     return <div className='w-full min-h-[360px] overflow-x-auto px-3 py-3 flex items-center justify-center'>
       <div>

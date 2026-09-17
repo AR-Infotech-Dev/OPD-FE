@@ -1,4 +1,4 @@
-import { Building2, ChevronDown, FileBarChart, LogOut, Menu, UserRound, } from "lucide-react";
+import { Hospital, ChevronDown, LogOut, Menu, UserRound, } from "lucide-react";
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,9 @@ import LoadingBar from "./LoadingBar";
 import { useAuth } from "@auth/components/AuthProvider";
 import Clock from "@components/ui/Clock"
 import { ALLOW_NOTIFICATIONS } from "@/api/config";
+import { formatUserRole, getInitials } from "@/utils/common";
 
-const getCompanyName = (user = {}) => user?.company_name || "";
+const getClinicName = (user = {}) => user?.clinic_name || "";
 
 function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
   const navigate = useNavigate();
@@ -45,11 +46,9 @@ function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
     [authSession?.user, storedUser]
   );
   const userId =
-    user?.adminID ||
-    user?.adminId ||
     user?.user_id ||
     user?.id;
-  const companyName = getCompanyName(user);
+  const clinicName = getClinicName(user);
 
   useEffect(() => {
     try {
@@ -76,7 +75,6 @@ function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
     };
   }, []);
 
-  const getInitials = (name = "") => name.split(" ").map((n) => n[0]).join("").toUpperCase();
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setLoggingOut(true);
@@ -104,19 +102,19 @@ function TopBar({ onLogout, onMenuToggle, isMenuOpen = false }) {
               {/* <span className="ml-1 absolute animate-bounce">👋</span> */}
             </h5>
             <h5 className="capitalize relative text-xs">
-              {user?.role_slug || "User"}
+              {user?.role_slug ? formatUserRole(user?.role_slug) : "User"}
             </h5>
           </div>
         </div>
         <div className="topbar-right">
-          {companyName && (
-            <span className="topbar-company" title={companyName}>
+          {clinicName && (
+            <span className="topbar-company" title={clinicName}>
 
-              <Building2 size={14} />
-              <span>{companyName}</span>
+              <Hospital size={14} color={"#f44336e8"} />
+              <span>{clinicName}</span>
             </span>
           )}
-          
+
           {
             ALLOW_NOTIFICATIONS && <NotificationBell />
           }

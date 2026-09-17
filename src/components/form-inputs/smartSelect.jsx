@@ -3,8 +3,16 @@ import { makeRequest } from "@api/httpClient";
 import DefaultLabel from "./DefaultLabel";
 import ValidationError from "./ValidationError";
 
-function SmartSelect({ field, value, onSelect, onObjectSelect, config = {}, error }) {
+function SmartSelect({
+  field,
+  value,
+  onSelect,
+  onObjectSelect,
+  config = {},
+  error,
+}) {
   const isLocked = Boolean(field.disabled || field.readOnly);
+
   const {
     apiUrl = "/system/searchList",
     tableName = "",
@@ -19,14 +27,18 @@ function SmartSelect({ field, value, onSelect, onObjectSelect, config = {}, erro
     countLabel = "",
     placeholder = "Select",
   } = config;
-
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(field.options || []);
   const [loading, setLoading] = useState(false);
 
   const fetchOptions = async () => {
+    if (Array.isArray(field.options) && field.options.length > 0) {
+      setOptions(field.options);
+      return;
+    }
+
     try {
       setLoading(true);
-      const res = await makeRequest(apiUrl, {
+        const res = await makeRequest(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,15 +54,17 @@ function SmartSelect({ field, value, onSelect, onObjectSelect, config = {}, erro
         },
       });
 
-      // const rows = (!slug) ? res?.data || [] : res?.data ? [0].sublist || [] ;
       const rows = !slug
         ? res?.data || []
         : res?.data?.[0]?.sublist || [];
 
       const formatted = rows.map((item) => {
         const count = countKey ? Number(item[countKey] || 0) : null;
+
         const label = countKey
-          ? `${item[labelKey]} (${count}${countLabel ? ` ${countLabel}` : ""})`
+          ? `${item[labelKey]} (${count}${
+              countLabel ? ` ${countLabel}` : ""
+            })`
           : item[labelKey];
 
         return {
@@ -71,11 +85,15 @@ function SmartSelect({ field, value, onSelect, onObjectSelect, config = {}, erro
 
   useEffect(() => {
     fetchOptions();
-  }, []);
+  }, [field.options]);
 
   useEffect(() => {
     if (!value || !options.length) return;
-    const matched = options.find((item) => String(item.value) === String(value));
+
+    const matched = options.find(
+      (item) => String(item.value) === String(value)
+    );
+
     if (matched) {
       onObjectSelect?.(matched.original || matched);
     }
@@ -83,24 +101,49 @@ function SmartSelect({ field, value, onSelect, onObjectSelect, config = {}, erro
 
   const handleChange = (event) => {
     onSelect?.(event);
-    const matched = options.find((item) => String(item.value) === String(event.target.value));
+
+    const matched = options.find(
+      (item) => String(item.value) === String(event.target.value)
+    );
+
     onObjectSelect?.(matched?.original || {});
   };
 
   return (
     <div className="flex flex-col gap-1">
-      {/* Label */}
-      {field?.label && (<DefaultLabel label={field.label} required={field.required} />)}
-      {/* Select */}
-      <select name={field.name} value={value || ""} onChange={handleChange} disabled={isLocked} className={`border ${error ? "border-red-400 text-red-600" : "border-gray-50 text-gray-600"} bg-gray-100 px-3 py-1.5 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:opacity-70 `}>
-        <option value="">{loading ? "Loading..." : placeholder}</option>
+      {field?.label && (
+        <DefaultLabel
+          label={field.label}
+          required={field.required}
+        />
+      )}
+
+      <select
+        name={field.name}
+        value={value || ""}
+        onChange={handleChange}
+        disabled={isLocked}
+        className={`border ${
+          error
+            ? "border-red-400 text-red-600"
+            : "border-gray-50 text-gray-600"
+        } bg-gray-100 px-3 py-1.5 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-100 disabled:cursor-not-allowed disabled:opacity-70`}
+      >
+        <option value="">
+          {loading ? "Loading..." : placeholder}
+        </option>
+
         {options.map((item) => (
-          <option key={item.value} value={item.value}>{item.label}</option>
+          <option
+            key={item.value}
+            value={item.value}
+          >
+            {item.label}
+          </option>
         ))}
       </select>
-      {error && (
-        <ValidationError error={error} />
-      )}
+
+      {error && <ValidationError error={error} />}
     </div>
   );
 }

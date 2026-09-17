@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 import { useModuleFilters } from "../../store/hooks";
@@ -9,76 +10,95 @@ import DynamicFilter from "../../components/dynamic-filter";
 import ResizableTable from "../../components/table/ResizableTable";
 import useMenuPermissions from "@auth/utils/useMenuPermissions";
 
-import CompanyMasterForm from "./components/CompanyMasterForm";
-import CompanyMasterTableRow from "./components/CompanyMasterTableRow";
-import { appointmentSchema} from "./data/module.schema";
-import { useCompanyMasterModule } from "./hooks/useCompanyMasterModule";
-import { useCompanyMasterTableConfig } from "./hooks/useCompanyMasterTableConfig";
-import { Upload } from "lucide-react";
+import AppointmentForm from "./components/AppointmentForm";
+import AppointmentTableRow from "./components/AppointmentTableRow";
+import { appointmentSchema } from "./data/module.schema";
+import { useAppointmentModule } from "./hooks/useAppointmentModule";
+import { useAppointmentTableConfig } from "./hooks/useAppointmentTableConfig";
 
 function AppointmentModulePage({ menu_id }) {
   const resolvedMenuID = menu_id || appointmentSchema.menu_id || null;
   const permissions = useMenuPermissions(resolvedMenuID);
+
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
 
-  const { filterState, setSearchText, applyFilterPayload, setSort, clearFilters } = useModuleFilters(
-    "appointment"
-  );
+  const {
+    filterState,
+    setSearchText,
+    applyFilterPayload,
+    setSort,
+    clearFilters,
+  } = useModuleFilters("appointment");
 
   const {
-    companyList,
+    appointmentList,
     pagination,
     page,
     loading,
     deleting,
     selectedRowIds,
     handlePageChange,
-    getCompanies,
+    getAppointments,
     handleToggleRow,
     handleToggleAllRows,
     handleDeleteSelected,
     handleDeleteRow,
-    handleDBExport
-  } = useCompanyMasterModule({ filterState });
+  } = useAppointmentModule({ filterState });
 
   const {
     sortConfig,
     resolvedColumns,
     defaultVisibleColumnKeys,
     resolvedFilterFields,
-  } = useCompanyMasterTableConfig({ resolvedMenuID, filterState });
+  } = useAppointmentTableConfig({
+    resolvedMenuID,
+    filterState,
+  });
 
   useEffect(() => {
-    getCompanies();
-  }, [page, filterState.searchText, filterState.order, filterState.order_by, JSON.stringify(filterState.filters)]);
+    getAppointments();
+  }, [
+    page,
+    filterState.searchText,
+    filterState.order,
+    filterState.order_by,
+    JSON.stringify(filterState.filters),
+  ]);
 
   useEffect(() => {
     if (page !== 1) {
       handlePageChange(1);
     }
-  }, [filterState.searchText, filterState.order, filterState.order_by, JSON.stringify(filterState.filters)]);
+  }, [
+    filterState.searchText,
+    filterState.order,
+    filterState.order_by,
+    JSON.stringify(filterState.filters),
+  ]);
 
   const openCreateFlyout = () => {
-    setSelectedCompany(null);
+    setSelectedAppointment(null);
     setIsFlyoutOpen(true);
   };
 
-  const openEditFlyout = (company) => {
-    setSelectedCompany(company);
+  const openEditFlyout = (appointment) => {
+    setSelectedAppointment(appointment);
     setIsFlyoutOpen(true);
   };
 
   const closeFlyout = () => {
     setIsFlyoutOpen(false);
-    setSelectedCompany(null);
+    setSelectedAppointment(null);
   };
 
   const handleSortChange = (columnKey) => {
     const nextSort = getNextSortConfig(sortConfig, columnKey);
+
     if (page !== 1) {
       handlePageChange(1);
     }
+
     setSort({
       order_by: nextSort.key,
       order: nextSort.direction.toUpperCase(),
@@ -95,13 +115,17 @@ function AppointmentModulePage({ menu_id }) {
             canCreate={permissions.canAdd}
             canDelete={permissions.canDelete}
             loading={loading}
-            onRefresh={getCompanies}
+            onRefresh={getAppointments}
             onCreate={openCreateFlyout}
             onDeleteSelected={handleDeleteSelected}
             showDelete={selectedRowIds.length > 0}
-            deleteDisabled={deleting || loading || selectedRowIds.length === 0}
+            deleteDisabled={
+              deleting ||
+              loading ||
+              selectedRowIds.length === 0
+            }
             deleting={deleting}
-            createLabel="Add Company"
+            createLabel="Add Appointment"
             filter={
               <DynamicFilter
                 filterState={filterState}
@@ -109,9 +133,9 @@ function AppointmentModulePage({ menu_id }) {
                 savedFilters={appointmentSchema.savedFilters}
                 onSearch={setSearchText}
                 onApplyFilters={applyFilterPayload}
-                onSaveFilter={() => { }}
-                onDeleteFilter={() => { }}
-                onSelectSavedFilter={() => { }}
+                onSaveFilter={() => {}}
+                onDeleteFilter={() => {}}
+                onSelectSavedFilter={() => {}}
                 onClearFilters={clearFilters}
               />
             }
@@ -122,48 +146,55 @@ function AppointmentModulePage({ menu_id }) {
             loading={loading}
             menuId={resolvedMenuID}
             columns={resolvedColumns}
-            rows={companyList}
-            storageKey="company-master-module-column-widths"
+            rows={appointmentList}
+            storageKey="appointment-module-column-widths"
             defaultVisibleColumnKeys={defaultVisibleColumnKeys}
             sortConfig={sortConfig}
             onSortChange={handleSortChange}
-            editRow={permissions.canEdit ? openEditFlyout : undefined}
-            onDeleteRow={permissions.canDelete ? handleDeleteRow : undefined}
+            editRow={
+              permissions.canEdit
+                ? openEditFlyout
+                : undefined
+            }
+            onDeleteRow={
+              permissions.canDelete
+                ? handleDeleteRow
+                : undefined
+            }
             allowSelection={permissions.canDelete}
             selectedRowIds={selectedRowIds}
             onToggleRow={handleToggleRow}
             onToggleAllRows={handleToggleAllRows}
             renderRow={(row, index, columns, table) => (
-              <CompanyMasterTableRow
+              <AppointmentTableRow
                 row={row}
                 index={index}
                 columns={columns}
                 table={table}
               />
             )}
-            rowActions={[
-              {
-                key: "exportDB",
-                label: "Export DB",
-                icon: Upload,
-                className: "table-action-edit",
-                onClick: handleDBExport,
-              },
-            ]}
           />
         }
-        footer={<ModulePagination pagination={pagination} onPageChange={handlePageChange} />}
+        footer={
+          <ModulePagination
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        }
       />
 
-      <CompanyMasterForm
+      <AppointmentForm
         isOpen={isFlyoutOpen}
         onClose={closeFlyout}
-        selectedCompany={selectedCompany}
-        onAfterSave={getCompanies}
+        selectedAppointment={selectedAppointment}
+        onAfterSave={getAppointments}
         menu_id={resolvedMenuID}
       />
     </>
   );
 }
 
-export default CompanyMasterModulePage;
+export default AppointmentModulePage;
+
+
+
