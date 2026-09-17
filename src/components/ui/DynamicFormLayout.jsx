@@ -31,6 +31,7 @@ export default function DynamicFormLayout({ layout,handleChange }) {
                       label: item.lable || item.custom,
                       required : item.required || false,
                       type: "text",
+                      readOnly: item.readOnly || false,
                     }}
                     value={null}
                     onChange={handleChange}

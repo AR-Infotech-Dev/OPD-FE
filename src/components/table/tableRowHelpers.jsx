@@ -45,6 +45,9 @@ export function getRowIdentifier(row) {
     row?.userId ??
     row?.menu_id ??
     row?.customer_id ??
+
+    row?.patient_id ??
+    row?.doctor_id ??
     row?.company_id
   );
 }
