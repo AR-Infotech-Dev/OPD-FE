@@ -6,6 +6,9 @@ import companyMasterReducer from "@modules/company-master/data/companyMaster.sli
 import menuMasterReducer from "@modules/menu-master/data/menuMaster.slice";
 import userroleReducer from "@modules/user-role/data/userrole.slice";
 
+import patientsReducer from "@modules/patients/data/patients.slice"
+import doctorsReducer from "@modules/doctors/data/doctors.slice"
+
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +18,9 @@ export const store = configureStore({
     companyMaster: companyMasterReducer,
     menuMaster: menuMasterReducer,
     userrole: userroleReducer,
+
+    patients: patientsReducer,
+    doctors: doctorsReducer,
   },
 });
 
