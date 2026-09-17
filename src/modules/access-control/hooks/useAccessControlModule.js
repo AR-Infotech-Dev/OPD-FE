@@ -24,7 +24,7 @@ export function useAccessControlModule({ currentUser = {} }) {
   const currentCompanyId = isSuperAdmin ? "" : currentUser?.company_id || currentUser?.default_company || "";
 
   const accessMenus = flattenMenuModules(getStoredMenuList());
-  const accessMenu = accessMenus.find(menu => menu.module_name === 'access-control' || menu.menu_link === '/access-control');
+  const accessMenu = accessMenus.find(menu => menu.module_name === 'access-control' || menu.menu_link === 'access-control');
   const canEdit = isSuperAdmin || hasMenuAccess(accessMenu?.menu_id, accessMenus, getStoredPermissions(), 'edit');
   const requestVersion = useRef(0);
   const [selectedIdentity, setSelectedIdentity] = useState(null);
@@ -63,7 +63,7 @@ export function useAccessControlModule({ currentUser = {} }) {
 
     try {
       setLoadingPermissions(true);
-      const res = await getIdentityPermissions(identity.id, identity.company_id);
+      const res = await getIdentityPermissions(identity.id);
 
       if (!res?.success) throw new Error(res?.message || "Unable to load role permissions");
       return normalizePermissionMap(res);
@@ -84,7 +84,8 @@ export function useAccessControlModule({ currentUser = {} }) {
     setModules([]);
     try {
       const [menuRows, permissionMap] = await Promise.all([fetchMenus(), fetchPreviousPermissions(identity)]);
-      if (version === requestVersion.current) setModules(applyPermissionMapToModules(menuRows, permissionMap));
+      const permittedmenus = menuRows.filter(menu => isSuperAdmin || hasMenuAccess(menu?.menu_id, menuRows, getStoredPermissions(), 'view') )
+      if (version === requestVersion.current) setModules(applyPermissionMapToModules(permittedmenus, permissionMap));
     } catch (error) {
       if (version === requestVersion.current) { setModules([]); toast.error(error.message); }
     }
@@ -147,18 +148,18 @@ export function useAccessControlModule({ currentUser = {} }) {
 
     setSaving(true);
     try {
-    const res = await saveIdentityPermissions({
-      identity: selectedIdentity,
-      permissions,
-    });
+      const res = await saveIdentityPermissions({
+        identity: selectedIdentity,
+        permissions,
+      });
 
-    if (res?.success) {
-      await loadSelectedPermissions();
-      toast.success(res?.message || "Permissions updated successfully");
-      return;
-    }
+      if (res?.success) {
+        await loadSelectedPermissions();
+        toast.success(res?.message || "Permissions updated successfully");
+        return;
+      }
 
-    toast.error(res?.message || "Unable to save permissions");
+      toast.error(res?.message || "Unable to save permissions");
     } catch (error) { toast.error(error.message); } finally { setSaving(false); }
   };
 

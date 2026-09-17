@@ -8,6 +8,8 @@ export const clinicSettingSchema = {
   primaryKey: "clinic_id",
   api: {
     save: "/clinic-setting",
+    logoUpload: "/clinic-setting/:id/logo",
+    logoRemove: "/clinic-setting/:id/logo/remove",
   },
   columnMappings: [
     { sender_email: "Sender Email" },

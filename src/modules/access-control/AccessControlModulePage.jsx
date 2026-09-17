@@ -24,7 +24,7 @@ function AccessControlModulePage() {
     resetDefault,
     saveChanges,
   } = useAccessControlModule({ currentUser });
-
+  
   return (
     <>
       <ModulePageLayout

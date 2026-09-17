@@ -4,13 +4,13 @@ export const default_filter_fields = {
     optionsSource: {
       apiUrl: "/system/searchList",
       body: {
-        tableName: "admin",
-        list: "adminID,name",
+        tableName: "users",
+        list: "user_id,name",
         wherec: "name",
         status: "true",
       },
       rowsPath: ["data"],
-      valueKey: "adminID",
+      valueKey: "user_id",
       labelKey: "name",
     },
   },
@@ -33,13 +33,13 @@ export const default_filter_fields = {
     optionsSource: {
       apiUrl: "/system/searchList",
       body: {
-        tableName: "admin",
-        list: "adminID,name",
+        tableName: "users",
+        list: "user_id,name",
         wherec: "name",
         status: "true",
       },
       rowsPath: ["data"],
-      valueKey: "adminID",
+      valueKey: "user_id",
       labelKey: "name",
     },
   },
@@ -68,7 +68,6 @@ export const getAvatarColor = (value = "") => {
   return COLORS[Math.abs(hash) % COLORS.length];
 };
 export const getInitials = (name = "") => name.split(" ").map((n) => n[0]).join("").toUpperCase();
-
 export const formatDate = (dateString, type = "full") => {
   if (!dateString) return "";
 
@@ -95,7 +94,6 @@ export const formatDate = (dateString, type = "full") => {
 
   return "";
 };
-
 export const formatRelativeTime = (dateString) => {
   if (!dateString) return "";
 
@@ -125,5 +123,11 @@ export const formatRelativeTime = (dateString) => {
   const years = Math.floor(days / 365);
   return `${years}yr${years > 1 ? "s" : ""} ago`;
 };
-
+export const formatUserRole = (role) => {
+  if (!role) return '';
+  return role
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // प्रत्येक शब्दाचे पहिले अक्षर Capital करेल
+    .join(' ');
+}
 

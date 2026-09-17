@@ -47,6 +47,7 @@ function PermissionsMatrix({
     }
     return true;
   };
+  
   return (
     <section className="min-w-0 overflow-hidden border border-slate-200 bg-white">
       <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3">
