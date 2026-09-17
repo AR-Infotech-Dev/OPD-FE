@@ -6030,7 +6030,7 @@ table input[type="checkbox"]:focus-visible {
 
 .topbar-greeting {
   min-width: 0;
-  background-image: url(/images/user_greeting.png);
+  background-image: url(/public/svg/greeting-anime.svg);
   background-size: contain;
   background-repeat: no-repeat;
   padding-right: 70px;

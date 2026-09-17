@@ -8,25 +8,25 @@ const FIXED_TABLE_COLUMNS = [
   { key: "select", className: "check-col", checkbox: true, width: 42, minWidth: 42, resizable: false },
   // { key: "favorite", className: "icon-col", width: 42, minWidth: 42, resizable: false },
 ];
-export const usersModuleSchema = {
+export const medicineModuleSchema = {
   // Copy this object for the next module and update API paths, joined tables,
   // default columns, skip fields, label mappings, and form sections only.
-  title: "Users",
-  description: "Manage users, roles, company assignment, and approval access from one place.",
+  title: "Medicine Master",
+  description: "Manage medicines, suppliers, and inventory from one place.",
   menu_id: 20,
-  primaryKey: 'user_id',
+  primaryKey: 'adminID',
   api: {
-    list: "/users",
-    delete: "/users/delete",
-    create: "/users/create",
-    edit: "/users",
+    list: "/medicines",
+    delete: "/medicines/delete",
+    create: "/medicines/create",
+    edit: "/medicines/edit",
     definitions: "/system/getDefinations",
     definitionsFallback: "/system/getstructure",
   },
   definitionRequest: {
     menuIDField: "menu_id",
     modelNameField: "model_name",
-    modelName: "user",
+    modelName: "medicine_master",
   },
   filterFieldOptions: {
     roleID: {
@@ -34,7 +34,7 @@ export const usersModuleSchema = {
       optionsSource: {
         apiUrl: "/system/searchList",
         body: {
-          tableName: "user_role_master",
+          tableName: "medicine_master",
           list: "roleID,roleName",
           wherec: "roleName",
         },
@@ -60,7 +60,7 @@ export const usersModuleSchema = {
     ...default_filter_fields,
   },
   defaultColumns: ["name", "userName", "email", "contactNo", "roleID", "status", "company_id"],
-  skipFields: ['default_company', "user_setting", "gfcmToken", "otp", "country_code", "otp_exp_time", "g_cal_token", "one_drive_access_token", "is_google_sync", "is_one_drive_sync", "ftoken", "isVerified", "photo", "user_id", "latitude", "longitude", "roleOfUser", "password"],
+  skipFields: ['default_company', "user_setting", "gfcmToken", "otp", "country_code", "otp_exp_time", "g_cal_token", "one_drive_access_token", "is_google_sync", "is_one_drive_sync", "ftoken", "isVerified", "photo", "adminID", "latitude", "longitude", "roleOfUser", "password"],
   tableCellConfig: [
     { column_name: "name", type: "person" },
     { column_name: "userName", type: "person" },
@@ -83,7 +83,7 @@ export const usersModuleSchema = {
   savedFilters: [],
   form: {
     initialValues: {
-      user_id: null,
+      adminID: null,
       name: null,
       default_company: null,
       time_zone: "Asia/Kolkata",
@@ -270,10 +270,10 @@ export const usersModuleSchema = {
   })
 };
 
-export const usersFallbackColumns = [
+export const medicineFallbackColumns = [
   ...FIXED_TABLE_COLUMNS,
-  ...buildFallbackColumnsFromKeys(usersModuleSchema.defaultColumns, {
-    columnMappings: usersModuleSchema.columnMappings,
-    tableCellConfig: usersModuleSchema.tableCellConfig,
+  ...buildFallbackColumnsFromKeys(medicineModuleSchema.defaultColumns, {
+    columnMappings: medicineModuleSchema.columnMappings,
+    tableCellConfig: medicineModuleSchema.tableCellConfig,
   }),
 ];

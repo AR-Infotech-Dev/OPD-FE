@@ -34,7 +34,7 @@ export function getSelectedLabel(field, value, selectedUser) {
   return value;
 }
 export function getUserIdentifier(user = {}) {
-  return user?.adminID;
+  return user?.user_id;
 }
 export function normalizeUserData(selectedUser = {}) {
   return {

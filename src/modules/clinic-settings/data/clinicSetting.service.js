@@ -20,3 +20,20 @@ export const saveClinic = async ({ mode, clinicId, payload }) => {
     body: JSON.stringify(payload),
   });
 };
+
+export const uploadClinicLogo = async ({ clinic_id, file }) => {
+  const uploadFormData = new FormData();
+  uploadFormData.append("clinic_logo", file);
+
+  return await makeRequest(clinicSettingSchema.api.logoUpload.replace(":id", clinic_id), {
+    method: "POST",
+    body: uploadFormData,
+  });
+};
+
+export const removeClinicLogo = async (clinic_id) => {
+  return await makeRequest(clinicSettingSchema.api.logoRemove.replace(":id", clinic_id), {
+    method: "DELETE",
+    body: {},
+  });
+};

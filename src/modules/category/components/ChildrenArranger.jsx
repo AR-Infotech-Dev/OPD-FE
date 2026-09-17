@@ -97,7 +97,6 @@
 //             return;
 //         }
 //         const reordered = arrayMove(value, oldIndex, newIndex).map((child, index) => ({ ...child, categories_index: index + 1, }));
-//         console.log("AFTER DRAG:", reordered);
 //         onChange?.(reordered);
 //     };
 //     return (
@@ -195,8 +194,6 @@ function ChildrenArranger({ value = [], onChange }) {
     }
 
     const reorderedChildren = arrayMove( children, oldIndex, newIndex ).map((child, index) => ({ ...child, categories_index: index + 1, }));
-
-    console.log("Children after drag:", reorderedChildren);
     onChange?.(reorderedChildren);
   };
 
