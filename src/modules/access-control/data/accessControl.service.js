@@ -9,10 +9,10 @@ export const getAccessMenus = async () => {
   });
 };
 
-export const getIdentityPermissions = async (identityId, companyId = "") => {
+export const getIdentityPermissions = async (identityId) => {
   return await makeRequest(`/permissions/${identityId}`, {
     method: "POST",
-    body: { company_id: companyId },
+    body: {},
   });
 };
 

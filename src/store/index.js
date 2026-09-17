@@ -10,6 +10,9 @@ import patientsReducer from "@modules/patients/data/patients.slice"
 import doctorsReducer from "@modules/doctors/data/doctors.slice"
 
 
+import labReducer from "@modules/lab/data/lab.slice";
+import departmentsReducer from "@modules/departments/data/departments.slice";
+import appointmentReducer from "@modules/appointment/data/appointment.slice";
 export const store = configureStore({
   reducer: {
     moduleFilters: moduleFiltersReducer,
@@ -21,6 +24,9 @@ export const store = configureStore({
 
     patients: patientsReducer,
     doctors: doctorsReducer,
+    lab: labReducer,
+    departments:departmentsReducer,
+    appointment: appointmentReducer,
   },
 });
 

@@ -121,7 +121,7 @@ function MenuList({ rows = [], loading = false, canEdit = true, canDelete = true
     })}
   </SortableContext>;
 
-  if (loading) return <div className="h-full w-full bg-white p-4"><SpinnerIllustration /></div>;
+  if (loading) return <div className="h-full w-full flex items-center h-full justify-center"><SpinnerIllustration /></div>;
   if (!rows.length)
     return <div className='w-full min-h-[360px] overflow-x-auto px-3 py-3 flex items-center justify-center'>
       <div>

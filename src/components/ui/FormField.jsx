@@ -1,8 +1,6 @@
 import Input  from "../form-inputs/Input";
 
 function FormField({ field, value, onChange, onClear }) {
-  {console.log(field)}
-
   switch (field.type) {
     case 'text':
         return (<Input  />)
@@ -11,14 +9,6 @@ function FormField({ field, value, onChange, onClear }) {
     default:
       break;
   }
-
-  // const label = (
-    
-  //   <label className="form-label" htmlFor={field.name}>
-  //     {field.label}
-  //     {field.required ? <span className="error"> *</span> : null}
-  //   </label>
-  // );
 
   if (field.type === "assignee") {
     return (
